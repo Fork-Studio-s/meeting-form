@@ -1,0 +1,18 @@
+{
+  "name": "gabeln-lead-form",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.1",
+    "firebase-admin": "^14.3.0",
+    "next": "^14.2.5",
+    "nodemailer": "^6.9.14",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
