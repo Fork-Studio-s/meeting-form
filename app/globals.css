@@ -113,6 +113,10 @@ body {
   border-radius: 100px;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .lang-toggle button.active {
@@ -241,6 +245,10 @@ body {
   transition: border-color 0.2s ease, background 0.2s ease;
   font-family: var(--font-sans);
   box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .option:hover {
@@ -290,6 +298,9 @@ body {
   align-items: center;
   margin-top: 26px;
   gap: 12px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 
 button.primary {
@@ -302,6 +313,10 @@ button.primary {
   cursor: pointer;
   font-family: var(--font-sans);
   transition: opacity 0.2s ease;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button.primary:disabled {
@@ -318,6 +333,10 @@ button.ghost {
   padding: 13px 4px;
   margin-right: auto;
   font-family: var(--font-sans);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .error-banner {
