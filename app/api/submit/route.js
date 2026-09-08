@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { db, FieldValue } from '../../../lib/firebase';
+import { getFirestoreDb, FieldValue } from '../../../lib/firebase';
 
 const REQUIRED_FIELDS = [
   'name',
@@ -231,9 +231,10 @@ export async function POST(request) {
   const score = scoreLead(data);
 
   // Save lead document to Firebase Firestore
-  if (db) {
+  const firestore = getFirestoreDb();
+  if (firestore) {
     try {
-      await db.collection('leads').add({
+      const docRef = await firestore.collection('leads').add({
         lang: data.lang || 'en',
         name: data.name,
         email: data.email,
@@ -250,9 +251,12 @@ export async function POST(request) {
         scoreNote: score.note,
         submittedAt: FieldValue.serverTimestamp(),
       });
+      console.log('[Firestore] Successfully recorded lead with ID:', docRef.id);
     } catch (dbErr) {
-      console.error('Firestore save error:', dbErr);
+      console.error('[Firestore] Error saving lead to Firestore:', dbErr);
     }
+  } else {
+    console.error('[Firestore] Firestore instance is null. Check Firebase environment variables in Vercel.');
   }
 
   try {
