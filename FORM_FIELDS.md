@@ -1,125 +1,143 @@
-# Gabeln Studio Lead Qualification Form — Fields & Questions
+# Gabeln Studio Lead Qualification Form — Fields & Flow
 
 This document outlines the complete sequence of screens, questions, input types, options, dynamic interpolation rules, and internal scoring logic for the Gabeln Studio lead qualification form (`form.gabelnstudio.com`).
 
 ---
 
-## Screen 1: Contact & Business Basics
-- **Step ID**: `profile`
-- **Kicker**: `Before we get on a call`
-- **Headline**: `Let’s start with a few quick basics.`
+## Screen Sequence (Low-Friction 8-Step Flow)
+
+### Screen 1: Business & Presence (`01 — Your business` / `01 — Bisnismu`)
+- **Step ID**: `business`
+- **Kicker**: `01 — Your business` (EN) / `01 — Bisnismu` (ID)
+- **Headline**: `Tell us about your business.` / `Mulai dari bisnismu ya.`
+- **Subtitle**: `Helps us look you up before the call.` / `Biar kita bisa lihat-lihat dulu sebelum sesinya.`
 - **Fields**:
-  1. **Your name** (`name`)
-     - Type: Text input (`placeholder="e.g. Sarah"`)
-     - Required: Yes
-  2. **Email address** (`email`)
-     - Type: Email input (`placeholder="you@business.com"`)
-     - Validation: Standard regex email validation (`isValidEmail`)
-     - Required: Yes
-  3. **Phone number** (`phone`)
-     - Type: Tel input (`placeholder="+62 812 3456 7890"`)
-     - Layout: Displayed side-by-side with Email address on desktop
-     - Required: Yes
-  4. **Business name** (`business`)
-     - Type: Text input (`placeholder="e.g. Kasa Villa"`)
+  1. **Business name** (`business`)
+     - Type: Text input (`placeholder="e.g. Kasa Villa"` / `"cth. Kasa Villa"`)
      - Usage: Interpolated into questions in subsequent screens
      - Required: Yes
-  5. **Instagram handle or website** (`handle`)
+  2. **Instagram handle or website** (`handle`)
      - Type: Text input (`placeholder="@yourbrand or yourbrand.com"`)
      - Required: Yes
 
 ---
 
-## Screen 2: Role at Business
+### Screen 2: Role at Business (`02 — Your role` / `02 — Peranmu`)
 - **Step ID**: `role`
-- **Headline**: `What’s your role at <business>?`
-  - *Interpolation*: Dynamically inserts `answers.business` (fallback: `"your business"`).
+- **Headline**: `What’s your role at <business>?` / `Posisi kamu di <business> apa?`
+  - *Interpolation*: Dynamically inserts `business` (fallback: `"your business"` / `"bisnismu"`).
 - **Options**:
   - `Owner / Founder`
-  - `Marketing or Brand Manager`
-  - `Other` *(triggers `roleOther` text input: `"Tell us more"`)*
+  - `Marketing or Brand Manager` / `Marketing atau Brand Manager`
+  - `Other` / `Lainnya` *(triggers text input: `"Tell us more"` / `"Ceritain lebih lanjut"`)*
 - **Internal Scoring**:
   - `Owner / Founder` → **Strong Fit**
-  - `Marketing or Brand Manager` → **Moderate Fit**
-  - `Other` → **Needs Qualification**
+  - `Marketing or Brand Manager` → **Moderate Fit (YELLOW)**
+  - `Other` → **Evaluated with budget/timeline**
 
 ---
 
-## Screen 3: Service Exploration
+### Screen 3: Service Exploration (`03 — What you're exploring` / `03 — Yang lagi dicari`)
 - **Step ID**: `service`
-- **Headline**: `What are you exploring for <business>?`
-  - *Interpolation*: Dynamically inserts `answers.business` (fallback: `"your business"`).
-- **Options Layout** (4-tier balanced grid):
-  1. `Web Design & Development` *(Row 1: Full-width)*
-  2. `Branding` & `IT Solution` *(Row 2: 50% / 50% split)*
-  3. `Digital Infrastructure` & `E-Commerce` *(Row 3: 50% / 50% split)*
-  4. `Other` *(Row 4: Full-width, triggers `serviceOther` text input: `"Tell us more"`)*
+- **Headline**: `What are you exploring for <business>?` / `Untuk <business>, kamu lagi explore yang mana?`
+- **Options**:
+  - `Web Design & Development`
+  - `Branding`
+  - `IT Solution`
+  - `Digital Infrastructure`
+  - `E-Commerce`
+  - `Other` / `Lainnya` *(triggers text input: `"Tell us more"` / `"Ceritain lebih lanjut"`)*
 - **Usage**: Selected service is passed into Screens 4, 5, and 7.
 
 ---
 
-## Screen 4: Mindset & Curiosity
+### Screen 4: Mindset & Curiosity (`04 — On your mind` / `04 — Yang lagi dipikirin`)
 - **Step ID**: `curiosity`
-- **Headline**: `When it comes to <service>, what’s on your mind most right now?`
-  - *Interpolation*: Dynamically inserts selected service (or custom value from `serviceOther`).
+- **Headline**: `When it comes to <service>, what’s on your mind most right now?` / `Soal <service>, yang paling kamu pikirin sekarang apa?`
+  - *Interpolation*: Dynamically inserts selected service.
 - **Options**:
-  - `How we'd approach it`
-  - `What it typically costs`
-  - `What results to expect`
-  - `Other` *(triggers `curiosityOther` text input: `"Tell us more"`)*
+  - `How we'd approach it` / `Cara kita approach-nya`
+  - `What it typically costs` / `Kira-kira biayanya berapa`
+  - `What results to expect` / `Hasil yang bisa diharapkan`
+  - `Other` / `Lainnya` *(triggers text input: `"Tell us more"` / `"Ceritain lebih lanjut"`)*
 
 ---
 
-## Screen 5: Desired Outcome
+### Screen 5: Desired Outcome (`05 — Desired outcome` / `05 — Hasil yang diinginkan`)
 - **Step ID**: `outcome`
-- **Headline**: `If you moved forward with <service>, what outcome would make it worth it?`
+- **Headline**: `If you moved forward with <service>, what outcome would make it worth it?` / `Kalau kamu lanjut dengan <service>, hasil apa yang bikin ini worth it?`
   - *Interpolation*: Dynamically inserts selected service.
 - **Options**:
-  - `More leads or inquiries`
-  - `Stronger brand perception`
-  - `Business scale`
-  - `Revenue growth`
-  - `Other` *(triggers `outcomeOther` text input: `"Tell us more"`)*
+  - `More leads or inquiries` / `Lebih banyak leads atau inquiry`
+  - `Stronger brand perception` / `Brand perception lebih kuat`
+  - `Business scale` / `Scale bisnis`
+  - `Revenue growth` / `Pertumbuhan revenue`
+  - `Other` / `Lainnya` *(triggers text input: `"Tell us more"` / `"Ceritain lebih lanjut"`)*
 - **Usage**: Selected outcome is passed into Screens 6 and 7.
 
 ---
 
-## Screen 6: Timeline
+### Screen 6: Timeline (`06 — Timeline` / `06 — Waktu`)
 - **Step ID**: `timeline`
-- **Headline**: `When would you like to start seeing <outcome>?`
-  - *Interpolation*: Dynamically inserts selected outcome (or custom value from `outcomeOther`).
+- **Headline**: `When would you like to start seeing <outcome>?` / `Kamu pengen mulai lihat <outcome> dari kapan?`
+  - *Interpolation*: Dynamically inserts selected outcome.
 - **Options**:
-  - `< 3 months`
-  - `3–6 months`
-  - `6 months – 1 year`
-  - `> 1 year`
+  - `< 3 months` / `< 3 bulan`
+  - `3–6 months` / `3–6 bulan`
+  - `6 months – 1 year` / `6 bulan – 1 tahun`
+  - `> 1 year` / `> 1 tahun`
 - **Internal Scoring**:
   - `< 3 months` or `3–6 months` → **Fast / Actionable**
-  - `> 1 year` → **Low Urgency**
+  - `6 months – 1 year` or `> 1 year` → **YELLOW**
 
 ---
 
-## Screen 7: Investment / Budget
+### Screen 7: Investment / Budget (`07 — Investment` / `07 — Investasi`)
 - **Step ID**: `budget`
-- **Headline**: `To get <outcome> from <service>, what investment feels reasonable right now?`
+- **Headline**: `To get <outcome> from <service>, what investment feels reasonable right now?` / `Untuk dapetin <outcome> dari <service>, investasi yang masuk akal buat kamu berapa?`
   - *Interpolation*: Dynamically inserts both `<outcome>` and `<service>`.
 - **Options**:
-  - `Under IDR 20mio`
-  - `IDR 20–50mio`
-  - `IDR 50–100mio`
-  - `IDR 100mio+`
+  - `Under IDR 20mio` / `Di bawah IDR 20jt`
+  - `IDR 20–50mio` / `IDR 20–50jt`
+  - `IDR 50–100mio` / `IDR 50–100jt`
+  - `IDR 100mio+` / `IDR 100jt+`
 - **Internal Scoring**:
-  - `IDR 50–100mio` or `IDR 100mio+` → **Qualified Lead (GREEN)**
+  - `Under IDR 20mio` / `Di bawah IDR 20jt` → **Below Minimum Retainer (RED)**
   - `IDR 20–50mio` → **Potential Lead (YELLOW)**
-  - `Under IDR 20mio` → **Below Minimum Retainer (RED)**
+  - `IDR 50–100mio` or `IDR 100mio+` → **Qualified Lead (GREEN)**
 
 ---
 
-## Background & Security Features
+### Screen 8: Contact Capture (`08 — Reaching you` / `08 — Cara kita hubungi`)
+*Matches the reference design:*
+- **Step ID**: `contact`
+- **Kicker**: `08 — Reaching you` (EN) / `08 — Cara kita hubungi` (ID)
+- **Headline**: `Where should we send your consultation details?` / `Ke mana kita kirim detail konsultasinya?`
+- **Subtitle**: `This is just for scheduling and sending your strategy plan.` / `Ini cuma buat atur jadwal dan kirim ringkasan strategi kamu.`
+- **Fields**:
+  1. **Full name** (`name`) — Text input (`placeholder="e.g. Sarah"` / `"cth. Sarah"`)
+  2. **Email** (`email`) — Email input (`placeholder="you@business.com"` / `"kamu@bisnis.com"`)
+  3. **Phone / WhatsApp** (`phone`) — Tel input (`placeholder="+62 812 3456 7890"`, pre-filled with `+62 `)
+- **Actions**:
+  - `Back` (ghost button on left)
+  - `Submit` (gold pill button on right)
+
+---
+
+### Screen 9: Thank You / All Set
+- **Kicker**: `You're all set.` / `Siap!`
+- **Headline**: `Thanks — see you on the call.` / `Makasih — sampai ketemu di sesinya.`
+- **Subtitle**: `We'll review this before your session so the conversation goes straight to what matters. A confirmation is on its way to your inbox.` / `Kita bakal review ini dulu sebelum sesi, biar obrolannya langsung ke yang penting. Konfirmasi sudah dikirim ke email kamu.`
+
+---
+
+## Technical Features
 
 | Feature | Details |
 |---|---|
-| **Honeypot Anti-Spam** | Hidden field `company_website_hp` (off-screen, `tabIndex={-1}`). Submissions with text here are silently dropped with an HTTP 200 to confuse scrapers. |
-| **Silent Lead Scoring** | Calculates composite score (`GREEN`, `YELLOW`, `RED`) server-side; included in the internal admin email and Firestore document. Never exposed to prospect. |
-| **Persistence (Firestore)** | Saved under collection `leads` with server timestamp, client IP, user agent, and all responses. |
-| **Email Dispatch (SMTP)** | Sends dual emails: internal team notification to `info.gabelnstudio@gmail.com` and branded confirmation to the prospect. |
+| **Bilingual Support (EN / ID)** | Instant top-bar pill toggle without page reloads. |
+| **Aesthetic System** | Luxury dark studio palette: Ink `#15161B`, Bone `#EFE9DC`, Gold `#D9A441`, Newsreader serif & Space Grotesk sans. |
+| **Progress Path** | Animated progress bar with glowing gold tracking point. |
+| **Honeypot Anti-Spam** | Hidden field `company_website_hp` (off-screen). Submissions with text are silently dropped with HTTP 200. |
+| **Firestore Persistence** | Saves all fields, server timestamp, and language `lang` under collection `leads`. |
+| **Dual Nodemailer Dispatch** | Sends internal scored lead alert to `info.gabelnstudio@gmail.com` and branded confirmation email to the prospect. |
