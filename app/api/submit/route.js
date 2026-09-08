@@ -205,8 +205,15 @@ export async function POST(request) {
     return Response.json({ error: 'That email address does not look valid.' }, { status: 400 });
   }
 
-  if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
-    console.error('Missing GMAIL_USER or GMAIL_APP_PASSWORD environment variables.');
+  const gmailUser = process.env.GMAIL_USER ? process.env.GMAIL_USER.trim() : '';
+  let gmailPassword = process.env.GMAIL_APP_PASSWORD ? process.env.GMAIL_APP_PASSWORD.trim() : '';
+  if (gmailPassword.startsWith('"') && gmailPassword.endsWith('"')) {
+    gmailPassword = gmailPassword.slice(1, -1);
+  }
+  gmailPassword = gmailPassword.replace(/\s+/g, '');
+
+  if (!gmailUser || !gmailPassword) {
+    console.error('Missing or invalid GMAIL_USER or GMAIL_APP_PASSWORD environment variables.');
     return Response.json(
       { error: 'Email is not configured yet. Please try again later.' },
       { status: 500 }
@@ -216,8 +223,8 @@ export async function POST(request) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_APP_PASSWORD,
+      user: gmailUser,
+      pass: gmailPassword,
     },
   });
 
@@ -251,8 +258,8 @@ export async function POST(request) {
   try {
     const subjectPrefix = data.lang === 'id' ? '[ID]' : '[EN]';
     await transporter.sendMail({
-      from: `Gabeln Studio Form <${process.env.GMAIL_USER}>`,
-      to: process.env.GMAIL_USER,
+      from: `Gabeln Studio Form <${gmailUser}>`,
+      to: gmailUser,
       replyTo: data.email,
       subject: `${subjectPrefix} New lead: ${data.business} (${score.tag})`,
       html: buildInternalEmailHtml(data, score),
@@ -264,7 +271,7 @@ export async function POST(request) {
         : `We've got your info, ${data.name}`;
 
     await transporter.sendMail({
-      from: `Gabeln Studio <${process.env.GMAIL_USER}>`,
+      from: `Gabeln Studio <${gmailUser}>`,
       to: data.email,
       subject: confirmSubject,
       html: buildConfirmationEmailHtml(data),
